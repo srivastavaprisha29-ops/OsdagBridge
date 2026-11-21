@@ -40,10 +40,18 @@ def main():
         ("desktop wind speed", 39, desktop_speed),
         ("legacy wind speed", 37, wind_speed({"basic_wind_speed": 37})),
         ("missing wind speed", 33, wind_speed({})),
+        ("canonical wind takes precedence", 39, wind_speed({wind_key: 39, "basic_wind_speed": 37})),
+        ("blank canonical wind uses legacy", 37, wind_speed({wind_key: "", "basic_wind_speed": 37})),
+        ("null canonical wind uses legacy", 37, wind_speed({wind_key: None, "basic_wind_speed": 37})),
+        ("zero canonical wind overrides legacy", None, wind_speed({wind_key: 0, "basic_wind_speed": 37})),
         ("explicit zero wind skips load", None, wind_speed({wind_key: 0})),
         ("desktop barrier load", 7.56, barrier_load({barrier_key: 7.56})),
         ("legacy barrier load", 5.5, barrier_load({"crash_barrier_load": 5.5})),
         ("missing barrier load", 6.54, barrier_load({})),
+        ("canonical barrier takes precedence", 7.56, barrier_load({barrier_key: 7.56, "crash_barrier_load": 5.5})),
+        ("blank canonical barrier uses legacy", 5.5, barrier_load({barrier_key: "", "crash_barrier_load": 5.5})),
+        ("null canonical barrier uses legacy", 5.5, barrier_load({barrier_key: None, "crash_barrier_load": 5.5})),
+        ("zero canonical barrier overrides legacy", 0, barrier_load({barrier_key: 0, "crash_barrier_load": 5.5})),
         ("explicit zero barrier load", 0, barrier_load({barrier_key: 0})),
     ]
     pressure = IRC6_2017.table_12(10, "plain", desktop_speed)["Pz"]

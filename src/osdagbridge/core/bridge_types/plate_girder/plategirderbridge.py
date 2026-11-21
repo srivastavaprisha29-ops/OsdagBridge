@@ -78,6 +78,7 @@ from osdagbridge.core.utils.common import (
     KEY_SL_LIVE_LOAD_MODE, KEY_SL_LIVE_LOAD_VALUE,
     KEY_SL_HORIZONTAL_COEFF, KEY_SL_VERTICAL_COEFF,
     KEY_SL_FORCE_LONGITUDINAL, KEY_SL_FORCE_TRANSVERSE,
+    KEY_WL_BASIC_WIND_SPEED,
     KEY_WL_TRANSVERSE_WIND_FORCE, KEY_WL_LONGITUDINAL_WIND_FORCE, KEY_WL_VERTICAL_WIND_FORCE,
     KEY_MD_WIDTH,
     KEY_RL_WIDTH,
@@ -1441,7 +1442,10 @@ class PlateGirderBridge:
         inp = self.input_dict
 
         # ── Wind speed / terrain ─────────────────────────────────────────
-        basic_wind_speed = float(ai.get("basic_wind_speed") or 33.0)
+        speed = ai.get(KEY_WL_BASIC_WIND_SPEED)
+        if speed in (None, ""):
+            speed = ai.get("basic_wind_speed")
+        basic_wind_speed = 33.0 if speed in (None, "") else float(speed)
         if basic_wind_speed == 0.0:
             bridge_logger.info("Wind load absent (speed=0); skipping.")
             return

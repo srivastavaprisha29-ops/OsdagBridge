@@ -319,5 +319,7 @@ def crash_barrier_load_from_inputs(additional_inputs: dict) -> float | None:
     Returns ``None`` when the key is absent, in which case
     ``crash_barrier_dead_load_kN_m()`` will apply the IRC 5 default.
     """
-    val = additional_inputs.get(_KEY_CRASH_BARRIER_LOAD)
+    val = additional_inputs.get(KEY_CB_LOAD)
+    if val in (None, ""):
+        val = additional_inputs.get(_KEY_CRASH_BARRIER_LOAD)
     return float(val) if val is not None else None
